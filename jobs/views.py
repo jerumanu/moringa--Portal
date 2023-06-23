@@ -1,51 +1,72 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from jobs.document import JobDocument
+# from jobs.document import JobDocument
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
- 
-from jobs.models import Category,JobDetail,Skill,Responsibility,Qualification
-from jobs.serializes import CategorySerializer,JobDetailSerializer,SkillSerializer,ResponsibilitySerializer,QualificationSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
+from jobs.models import Category, JobApplication,JobDetail,Skill,Responsibility,Qualification
+from jobs.serializers import(
+CategorySerializer,
+JobApplicationSerializer,
+JobDetailSerializer,
+SkillSerializer,
+ResponsibilitySerializer,
+QualificationSerializer)
+
 from rest_framework import generics
 
+class JobApplicationListCreateView(generics.ListCreateAPIView):
+    queryset = JobApplication.objects.all()
+    serializer_class = JobApplicationSerializer
 
-class JobDocumentView(DocumentViewSet):
-    document = JobDocument
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class JobApplicationRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = JobApplication.objects.all()
+    serializer_class = JobApplicationSerializer
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CategorySoftDeleteView(generics.GenericAPIView):
+    queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    pagination_class = None  # Remove pagination for simplicity
 
-    def get_queryset(self):
-        return self.document.search().query("match_all")  # Return all documents
-
-class JobSearchAPIView(generics.ListAPIView):
-    serializer_class = CategorySerializer
-    pagination_class = None  # Remove pagination for simplicity
-
-    def get_queryset(self):
-        query = self.request.GET.get('q', '')  # Get search query from URL parameter 'q'
-        if query:
-            return JobDocument.search().query("multi_match", query=query, fields=['title', 'job_categories.job_title'])
-        else:
-            return JobDocument.search().query("match_all")
-
-class CategorySearchAPIView(generics.ListAPIView):
-
-    serializer_class = CategorySerializer
+    def post(self, request, pk):
+        category = get_object_or_404(self.get_queryset(), pk=pk)
+        category.soft_delete()
+        return Response({'message': 'Category soft-deleted successfully.'})
     
-    def get_queryset(self):
-        search_query = self.request.query_params.get('search', None)
-        if search_query:
-            category_index = CategoryIndex()
-            response = category_index.search(search_query)
-            positions = [hit.position for hit in response.hits]
-            queryset = Category.objects.filter(position__in=positions)
-        else:
-            queryset = Category.objects.none()
-        return queryset
 
+class CategoryRestoreView(generics.GenericAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+    def post(self, request, pk):
+        category = self.get_object()
+        category.restore()
+        return Response({'message': 'Category restored successfully.'})
 
 class CategoriesListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.undeleted_objects.all()
     serializer_class = CategorySerializer
 
 
@@ -66,7 +87,8 @@ class CategoriesListCreateAPIView(generics.ListCreateAPIView):
 class CategoriesRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
+    permission_classes = [IsAuthenticated]
+    
     def delete(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)

@@ -5,6 +5,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
+from .permission import RolePermission
+
 from .serializers import (
     UserRegistrationSerializer,
     UserLoginSerializer,
@@ -61,15 +63,12 @@ class AuthUserLoginView(APIView):
             }
 
             return Response(response, status=status_code)
-
 class UserListView(APIView):
     serializer_class = UserListSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-
         user = request.user
-
         if user.role != 1:
             response = {
                 'success': False,
@@ -77,9 +76,7 @@ class UserListView(APIView):
                 'message': 'You are not authorized to perform this action'
             }
             return Response(response, status.HTTP_403_FORBIDDEN)
-        
         else:
-
             users = User.objects.all()
             serializer = self.serializer_class(users, many=True)
             response = {
@@ -89,11 +86,7 @@ class UserListView(APIView):
                 'users': serializer.data
 
             }
-
             return Response(response, status=status.HTTP_200_OK)
-        
-
-
 
 
 class ProfileAPIView(APIView):

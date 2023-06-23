@@ -1,3 +1,5 @@
+from jobs.models import Skill
+from jobs.serializers import SkillSerializer
 from .models import User, Profile
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -77,14 +79,22 @@ class UserListSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserRegistrationSerializer()
+    skills = SkillSerializer(many=True, read_only=True)
 
     class Meta:
         model = Profile
-        fields = ('id', 'user','description')  # Include other fields from Profile if needed
+        fields = ('id', 'user', 'description', 'skills')
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
-        user = User.objects.create(**user_data)
+        user_serializer = UserRegistrationSerializer(data=user_data)
+        user_serializer.is_valid(raise_exception=True)
+        user = user_serializer.save()
+
+        skills_data = validated_data.pop('skills')  # Assuming skills are passed as a list of dictionaries
         profile = Profile.objects.create(user=user, **validated_data)
+
+        for skill_data in skills_data:
+            Skill.objects.create(profile=profile, **skill_data)
+
         return profile
-    

@@ -1,29 +1,25 @@
 # models.py
-
 from django.db import models
 
-from custom_model import BaseSoftDeletableModel
+from authentication.models import Profile
+from .custom_model import SoftDeleteModel
 
-
-
-
-class Category(BaseSoftDeletableModel):
-    
+class Category(SoftDeleteModel):
     title = models.CharField(max_length=255)
     position = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     created_by = models.IntegerField()
 
 class JobApplication(models.Model):
-    job_category = models.OneToOneField(Category, on_delete=models.CASCADE)
+    job_category = models.ForeignKey(Category, related_name='job_applications', on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
-    resume = models.FileField(upload_to='resumes/')
+    # resume = models.FileField(upload_to='resumes/')
     cover_letter = models.TextField()
 
 class JobDetail(models.Model):
-    category = models.ForeignKey(Category, related_name='job_category', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name='job_details', on_delete=models.CASCADE)
     job_title = models.CharField(max_length=255)
     job_detail = models.TextField()
     job_level = models.CharField(max_length=255)
@@ -32,6 +28,8 @@ class JobDetail(models.Model):
 
 class Skill(models.Model):
     job_detail = models.ForeignKey(JobDetail, related_name='job_skills', on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, related_name='profile_skills', on_delete=models.CASCADE, null=True)
+
     skill_name = models.CharField(max_length=255)
 
 class Responsibility(models.Model):
