@@ -98,23 +98,23 @@ DATABASE_URL='postgres://jeru_123:3qvlPpiYGPG9YlyQyssvUNPWKtsTYOoc@dpg-cihvt8dgk
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if not DEBUG:
-    DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
-else:
-    DATABASES = {
+# if not DEBUG:
+DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+# else:
+#     DATABASES = {
         
 
-        "default": {
-            "ENGINE":'django.db.backends.postgresql',
-            "NAME": "portal",
-            "USER":"jerumanu",
-            "PASSWORD":"jeru@123",
-            "HOST": "localhost",
+#         "default": {
+#             "ENGINE":'django.db.backends.postgresql',
+#             "NAME": "portal",
+#             "USER":"jerumanu",
+#             "PASSWORD":"jeru@123",
+#             "HOST": "localhost",
             
-            "PORT":5432,
-        }
+#             "PORT":5432,
+#         }
         
-    }
+#     }
 
 
 
