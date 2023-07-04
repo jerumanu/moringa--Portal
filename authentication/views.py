@@ -14,7 +14,7 @@ from .serializers import (
     ProfileSerializer
 )
 
-from .models import User,Profile
+from .models import User, Profile
 
 
 class AuthUserRegistrationView(APIView):
@@ -37,7 +37,7 @@ class AuthUserRegistrationView(APIView):
             }
 
             return Response(response, status=status_code)
-        
+
 
 class AuthUserLoginView(APIView):
     serializer_class = UserLoginSerializer
@@ -57,14 +57,17 @@ class AuthUserLoginView(APIView):
                 'access': serializer.data['access'],
                 'refresh': serializer.data['refresh'],
                 'authenticatedUser': {
-                'email': serializer.data['email'],
-                'role': serializer.data['role']
+                    'email': serializer.data['email'],
+                    'role': serializer.data['role']
                 }
             }
 
             return Response(response, status=status_code)
+
+
 class UserListView(APIView):
     serializer_class = UserListSerializer
+
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):

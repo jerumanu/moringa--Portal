@@ -1,14 +1,14 @@
 # models.py
 from django.db import models
 
-from authentication.models import Profile
+from authentication.models import Profile, User
 from .custom_model import SoftDeleteModel
 
 class Category(SoftDeleteModel):
     title = models.CharField(max_length=255)
     position = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User , on_delete=models.CASCADE )
 
 class JobApplication(models.Model):
     job_category = models.ForeignKey(Category, related_name='job_applications', on_delete=models.CASCADE)
@@ -17,6 +17,7 @@ class JobApplication(models.Model):
     phone_number = models.CharField(max_length=20)
     # resume = models.FileField(upload_to='resumes/')
     cover_letter = models.TextField()
+    created_by = models.ManyToManyField(User)
 
 class JobDetail(models.Model):
     category = models.ForeignKey(Category, related_name='job_details', on_delete=models.CASCADE)

@@ -43,7 +43,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
     path('job/', include('jobs.urls')),
-    path('search/', include('search.urls')), 
+    # path('search/', include('search.urls')), 
 
 
 ]

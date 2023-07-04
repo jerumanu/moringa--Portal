@@ -1,11 +1,10 @@
 from jobs.models import Skill
-from jobs.serializers import SkillSerializer
+from jobs.serializers import SkillSerializer,CategorySerializer,JobApplicationSerializer
 from .models import User, Profile
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.utils import timezone
-
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,11 +69,16 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid login credentials")
         
 class UserListSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(many=True, read_only=True)
+    job_application = JobApplicationSerializer(many=True, read_only=True)    
     class Meta:
         model = User
         fields = (
+            'id',
             'email',
-            'role'
+            'role',
+            'category',
+            'job_application'
         )
 
 class ProfileSerializer(serializers.ModelSerializer):

@@ -27,12 +27,11 @@ environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 DEBUG = env('DEBUG')
-# ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'authentication.User'
 
-
+ALLOWED_HOSTS= ['*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -56,8 +55,8 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'drf_yasg',
 
-    'django_elasticsearch_dsl_drf',
-    'django_elasticsearch_dsl', 
+    # 'django_elasticsearch_dsl_drf',
+    # 'django_elasticsearch_dsl', 
 
 
 ]
@@ -102,12 +101,13 @@ DATABASES = {
     
 
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("DATABASE_NAME", BASE_DIR / "db.sqlite3"),
-        "USER": os.environ.get("DATABASE_USER", "user"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD'", "password"),
-        "HOST": os.environ.get("HOST", "localhost"),
-        "PORT": os.environ.get("PORT", "5432"),
+        "ENGINE":'django.db.backends.postgresql',
+        "NAME": env('POSTGRES_DB'),
+        "USER":env('DATABASE_USER'),
+        "PASSWORD":env('POSTGRES_PASSWORD'),
+        "HOST": env('SQL_HOST'),
+        
+        "PORT":5432,
     }
     
     }
@@ -115,12 +115,6 @@ DATABASES = {
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': (
@@ -142,12 +136,12 @@ REST_FRAMEWORK = {
 }
 
 
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'localhost:9200',
+# ELASTICSEARCH_DSL = {
+#     'default': {
+#         'hosts': 'localhost:9200',
         
-    },
-}
+#     },
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

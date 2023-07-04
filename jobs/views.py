@@ -66,9 +66,8 @@ class CategoryRestoreView(generics.GenericAPIView):
         return Response({'message': 'Category restored successfully.'})
 
 class CategoriesListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Category.undeleted_objects.all()
+    queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
