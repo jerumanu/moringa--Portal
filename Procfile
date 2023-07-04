@@ -1,1 +1,1 @@
-web: gunicorn 'moringaportal.wsgi'
+web: gunicorn moringaportal.wsgi
