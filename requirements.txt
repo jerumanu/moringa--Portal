@@ -9,11 +9,12 @@ djangorestframework==3.14.0
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==5.2.2
 
-
+drf-yasg==1.21.6
+drf-yasg2==1.19.4
 elasticsearch==7.17.9
 elasticsearch-dsl==7.4.1
 
 gunicorn==20.1.0
 
 psycopg2-binary==2.9.6
-dj_database_url
+dj-database-url==2.0.0
