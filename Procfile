@@ -1,1 +1,1 @@
-web: gunicorn moringaportal.wsgi --log-file -
+gunicorn moringaportal.wsgi:application
