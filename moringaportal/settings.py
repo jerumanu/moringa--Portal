@@ -29,7 +29,7 @@ SECRET_KEY ='SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
-DEBUG = env('DEBUG')
+DEBUG = False
 AUTH_USER_MODEL = 'authentication.User'
 
 ALLOWED_HOSTS= ['*']
