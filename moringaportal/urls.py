@@ -1,5 +1,5 @@
-"""moringaportal URL Configuration
 
+"""moringaportal URL Configuration
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
 Examples:
@@ -41,9 +41,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
         name='schema-redoc'), 
     path('admin/', admin.site.urls),
-    path('auth/', include('authentication.urls')),
+    path('', include('authentication.urls')),
     path('job/', include('jobs.urls')),
-    # path('search/', include('search.urls')), 
-
 
 ]

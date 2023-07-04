@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import environ
 import os 
-import dj_database_url
 
 # Initialise environment variables
 
@@ -26,15 +25,15 @@ environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = env('SECRET_KEY')
-SECRET_KEY ='SECRET_KEY'
+SECRET_KEY = env('SECRET_KEY')
+# SECRET_KEY ='SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
-DEBUG = False
+DEBUG = True
 AUTH_USER_MODEL = 'authentication.User'
 
-ALLOWED_HOSTS= ['*']
+ALLOWED_HOSTS= ["*"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,8 +57,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'drf_yasg',
 
-    # 'django_elasticsearch_dsl_drf',
-    # 'django_elasticsearch_dsl', 
+
 
 
 ]
@@ -101,10 +99,10 @@ DATABASE_URL='postgres://jeru_123:3qvlPpiYGPG9YlyQyssvUNPWKtsTYOoc@dpg-cihvt8dgk
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if not DEBUG:
-    DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
-else:
-    DATABASES = {
+# if not DEBUG:
+#     DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+# else:
+DATABASES = {
         
 
         "default": {
