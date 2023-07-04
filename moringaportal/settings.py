@@ -97,19 +97,22 @@ WSGI_APPLICATION = 'moringaportal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    
-
-    "default": {
-        "ENGINE":'django.db.backends.postgresql',
-        "NAME": env('POSTGRES_DB'),
-        "USER":env('DATABASE_USER'),
-        "PASSWORD":env('POSTGRES_PASSWORD'),
-        "HOST": env('SQL_HOST'),
+if not DEBUG:
+    DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
+else:
+    DATABASES = {
         
-        "PORT":5432,
-    }
-    
+
+        "default": {
+            "ENGINE":'django.db.backends.postgresql',
+            "NAME": env('POSTGRES_DB'),
+            "USER":env('DATABASE_USER'),
+            "PASSWORD":env('POSTGRES_PASSWORD'),
+            "HOST": env('SQL_HOST'),
+            
+            "PORT":5432,
+        }
+        
     }
 
 
