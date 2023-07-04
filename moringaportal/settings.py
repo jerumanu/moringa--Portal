@@ -106,10 +106,10 @@ else:
 
         "default": {
             "ENGINE":'django.db.backends.postgresql',
-            "NAME": env('POSTGRES_DB'),
-            "USER":env('DATABASE_USER'),
-            "PASSWORD":env('POSTGRES_PASSWORD'),
-            "HOST": env('SQL_HOST'),
+            "NAME": "portal",
+            "USER":"jerumanu",
+            "PASSWORD":"jeru@123",
+            "HOST": "localhost",
             
             "PORT":5432,
         }
