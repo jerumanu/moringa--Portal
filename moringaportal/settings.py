@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import environ
 import os 
+import dj_database_url
 
 # Initialise environment variables
 
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
 
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -96,10 +98,10 @@ DATABASE_URL='postgres://jeru_123:3qvlPpiYGPG9YlyQyssvUNPWKtsTYOoc@dpg-cihvt8dgk
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# if not DEBUG:
-#     DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
-# else:
-DATABASES = {
+if not DEBUG:
+    DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+else:
+    DATABASES = {
         
 
         "default": {
@@ -178,6 +180,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = 'static/'
 
