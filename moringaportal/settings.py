@@ -101,7 +101,7 @@ DATABASE_URL='postgres://jeru_123:3qvlPpiYGPG9YlyQyssvUNPWKtsTYOoc@dpg-cihvt8dgk
 # if not DEBUG:
 DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
 # else:
-#     DATABASES = {
+# DATABASES = {
         
 
 #         "default": {
