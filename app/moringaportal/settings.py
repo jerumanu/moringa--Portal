@@ -95,7 +95,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'moringaportal.wsgi.application'
 
-DATABASE_URL='postgres://jeru_123:3qvlPpiYGPG9YlyQyssvUNPWKtsTYOoc@dpg-cihvt8dgkuvojjdfl410-a/moringa_375'
+DATABASE_URL='postgres://jerumanu:qpSQVuxY2KLrbHgxsSKWJjMSA7rCU5aR@dpg-cir5f6lph6ev5raf8fa0-a/moringa_6lfh'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
