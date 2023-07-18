@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 # from jobs.document import JobDocument
-from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+# from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from  profiles.models import Profile
 
