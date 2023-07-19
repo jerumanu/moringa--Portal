@@ -5,6 +5,8 @@ FROM python:3.9.6-alpine
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
+RUN mkdir -p /app
+
 # Set the working directory in the container
 COPY . /app
 WORKDIR /app
@@ -19,15 +21,7 @@ COPY requirements.txt .
 
 # Install project dependencies
 RUN /opt/venv/bin/pip install --upgrade pip && \
-/opt/venv/bin/pip install --no-cache-dir -r requirements.txt && \
-chmod +x entrypoint.sh
+    /opt/venv/bin/pip install --no-cache-dir -r requirements.txt && \
+    chmod +x entrypoint.sh
 
-CMD [ "/app/entrypoint.sh" ]
-# Copy the project files into the container
-COPY . .
-
-# Expose the port that the Django development server will run on (default: 8000)
-# EXPOSE 8000
-
-# Start the Django development server
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["/app/entrypoint.sh"]

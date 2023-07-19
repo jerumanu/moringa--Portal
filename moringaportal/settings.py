@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'rest_framework',
-
+    'corsheaders',
     'authentication',
     'jobs',
     'search',
@@ -67,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -103,21 +104,21 @@ DATABASE_URL='postgres://jerumanu:qpSQVuxY2KLrbHgxsSKWJjMSA7rCU5aR@dpg-cir5f6lph
 # if not DEBUG:
 DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
 # else:
-    # DATABASES = {
+# DATABASES = {
             
 
-    #         "default": {
-    #             "ENGINE":'django.db.backends.postgresql',
-    #             "NAME":os.environ.get("POSTGRES_DB") ,
-    #             "USER":os.environ.get("DATABASE_USER"),
-    #             "PASSWORD":os.environ.get("POSTGRES_PASSWORD"),
-    #             # "HOST": env("SQL_HOST"),
-    #             "PORT":5432,
-    #             "HOST": "localhost",
+#             "default": {
+#                 "ENGINE":'django.db.backends.postgresql',
+#                 "NAME":os.environ.get("POSTGRES_DB") ,
+#                 "USER":os.environ.get("DATABASE_USER"),
+#                 "PASSWORD":os.environ.get("POSTGRES_PASSWORD"),
+#                 # "HOST": env("SQL_HOST"),
+#                 "PORT":5432,
+#                 "HOST": os.environ.get("SQL_HOST"),
 
-    #         }
-            
-    #     }
+#             }
+        
+#         }
 
 
 
@@ -191,6 +192,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = 'static/'
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
