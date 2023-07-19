@@ -11,8 +11,8 @@ djangorestframework-simplejwt==5.2.2
 elasticsearch-dsl
 drf-yasg==1.21.6
 drf-yasg2==1.19.4
-elasticsearch==7.17.9
-elasticsearch-dsl==7.4.1
+# elasticsearch==7.17.9
+# elasticsearch-dsl==7.4.1
 django-dotenv
 gunicorn==20.1.0
 django-cors-headers
