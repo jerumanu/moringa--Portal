@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.utils import timezone
+from django.contrib.auth.password_validation import validate_password
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,7 +74,8 @@ class UserLoginSerializer(serializers.Serializer):
 class UserListSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=True, read_only=True)
     job_application = JobApplicationSerializer(many=True, read_only=True)   
-    user=ProfileSerializer()
+    
+    # user=ProfileSerializer()
     class Meta:
         model = User
         fields = (
@@ -83,27 +85,38 @@ class UserListSerializer(serializers.ModelSerializer):
             'last_name',
             'role',
             'category',
-            'job_application'
+            'job_application',
+            # 'user'
         )
 
-# class ProfileSerializer(serializers.ModelSerializer):
-#     user = UserRegistrationSerializer()
-#     skills = SkillSerializer(many=True, read_only=True)
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    old_password = serializers.CharField(write_only=True, required=True)
 
-#     class Meta:
-#         model = Profile
-#         fields = ('id', 'user', 'description', 'skills')
+    class Meta:
+        model = User
+        fields = ('old_password', 'password', 'password2')
 
-#     def create(self, validated_data):
-#         user_data = validated_data.pop('user')
-#         user_serializer = UserRegistrationSerializer(data=user_data)
-#         user_serializer.is_valid(raise_exception=True)
-#         user = user_serializer.save()
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
 
-#         skills_data = validated_data.pop('skills')  # Assuming skills are passed as a list of dictionaries
-#         profile = Profile.objects.create(user=user, **validated_data)
+        return attrs
 
-#         for skill_data in skills_data:
-#             Skill.objects.create(profile=profile, **skill_data)
+    def validate_old_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError({"old_password": "Old password is not correct"})
+        return value
 
-#         return profile
+    def update(self, instance, validated_data):
+
+        instance.set_password(validated_data['password'])
+        instance.save()
+
+        return instance
+
+    # def get_serializer(self, *args, **kwargs):
+    #     kwargs['context'] = self.get_serializer_context()
+    #     return self.serializer_class(*args, **kwargs)

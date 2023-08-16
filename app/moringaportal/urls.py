@@ -43,8 +43,9 @@ urlpatterns = [
     path('v1/admin/', admin.site.urls),
     path('v1/auth/', include('authentication.urls')),
     path('v1/jobs/', include('jobs.urls')),
-    # path('v1/search/', include('search.urls')),
+    path('v1/search/', include('search.urls')),
     path('v1/profiles/', include('profiles.urls')),
     path('v1/apply/', include('applications.urls')),
+    # path('notifications/', include('notifications.routing')),
 
 ]

@@ -4,6 +4,7 @@ from rest_framework_simplejwt import views as jwt_views
 from .views import (
     AuthUserRegistrationView,
     AuthUserLoginView,
+    ChangePasswordView,
     UserListView,
     # ProfileAPIView
 )
@@ -14,5 +15,7 @@ urlpatterns = [
     path('register',AuthUserRegistrationView.as_view(), name='register'),
     path('login', AuthUserLoginView.as_view(), name='login'),
     path('users', UserListView.as_view()),
+    path('change_password/<int:pk>/', ChangePasswordView.as_view(), name='auth_change_password'),
+
     # path('profiles/', ProfileAPIView.as_view(), name='profiles'),
 ]

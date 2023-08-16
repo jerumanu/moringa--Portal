@@ -53,19 +53,22 @@ INSTALLED_APPS = [
     'soft',
     'profiles',
     'applications',
+    "notifications",
+
 
     'rest_framework.authtoken',
-    # 'django_elasticsearch_dsl',
-    # 'django_elasticsearch_dsl_drf',
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
     'rest_framework_swagger',
     'drf_yasg',
 
+    "channels",
 ]
 
 MIDDLEWARE = [
 
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -94,6 +97,9 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'moringaportal.asgi.application'
+
+
 WSGI_APPLICATION = 'moringaportal.wsgi.application'
 
 DATABASE_URL='postgres://jerumanu:qpSQVuxY2KLrbHgxsSKWJjMSA7rCU5aR@dpg-cir5f6lph6ev5raf8fa0-a/moringa_6lfh'
@@ -102,26 +108,21 @@ DATABASE_URL='postgres://jerumanu:qpSQVuxY2KLrbHgxsSKWJjMSA7rCU5aR@dpg-cir5f6lph
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # if not DEBUG:
-DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+# DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
 # else:
-# DATABASES = {
+DATABASES = {
             
-
-#             "default": {
-#                 "ENGINE":'django.db.backends.postgresql',
-#                 "NAME":os.environ.get("POSTGRES_DB") ,
-#                 "USER":os.environ.get("DATABASE_USER"),
-#                 "PASSWORD":os.environ.get("POSTGRES_PASSWORD"),
-#                 # "HOST": env("SQL_HOST"),
-#                 "PORT":5432,
-#                 "HOST": os.environ.get("SQL_HOST"),
-
-#             }
+            "default": {
+                "ENGINE":'django.db.backends.postgresql',
+                "NAME":os.environ.get("POSTGRES_DB") ,
+                "USER":os.environ.get("DATABASE_USER"),
+                "PASSWORD":os.environ.get("POSTGRES_PASSWORD"),
+                # "HOST": env("SQL_HOST"),
+                "PORT":5432,
+                "HOST": os.environ.get("SQL_HOST"),
+            }
         
-#         }
-
-
-
+        }
 
 
 REST_FRAMEWORK = {
@@ -142,11 +143,20 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'  
 
 }
-# ELASTICSEARCH_DSL = {
-#     'default': {
-#         'hosts': 'elasticsearch:9200',  # Use the service name and port
-#     },
-# }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'elasticsearch:9200',  # Use the service name and port
+    },
+}
 
 # ELASTICSEARCH_DSL = {
 #     'default': {
@@ -188,10 +198,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = 'static/'
+
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
