@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path, include
 # drf_yasg code starts here
@@ -41,11 +42,19 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
         name='schema-redoc'), 
     path('v1/admin/', admin.site.urls),
+    # path("__debug__/", include("debug_toolbar.urls")),
     path('v1/auth/', include('authentication.urls')),
     path('v1/jobs/', include('jobs.urls')),
-    path('v1/search/', include('search.urls')),
+    # path('v1/search/', include('search.urls')),
     path('v1/profiles/', include('profiles.urls')),
     path('v1/apply/', include('applications.urls')),
     # path('notifications/', include('notifications.routing')),
 
 ]
+
+if settings.DEBUG:
+    # import debug_toolbar
+
+    urlpatterns +=  path("__debug__/", include("debug_toolbar.urls")),
+    
+    

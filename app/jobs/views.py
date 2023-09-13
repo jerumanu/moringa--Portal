@@ -39,7 +39,7 @@ class CategoryRestoreView(generics.GenericAPIView):
         return Response({'message': 'Category restored successfully.'})
 
 class CategoriesListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
+    queryset =  Category.objects.all().prefetch_related('job_details')
     serializer_class = CategorySerializer
 
     def post(self, request, *args, **kwargs):
@@ -57,7 +57,7 @@ class CategoriesListCreateAPIView(generics.ListCreateAPIView):
         return Response(response_data, status=status.HTTP_201_CREATED)
 
 class CategoriesRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().prefetch_related('job_details')
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
     

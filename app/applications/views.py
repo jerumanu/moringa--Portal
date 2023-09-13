@@ -62,9 +62,9 @@ class JobApplicationRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIV
 class UserApplicationRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = JobApplicationSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        return JobApplication.objects.filter(created_by=user)
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return JobApplication.objects.filter(created_by=user)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

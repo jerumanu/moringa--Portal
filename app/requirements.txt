@@ -21,4 +21,7 @@ dj-database-url
 # whitenoise
 # Brotli
 channels
-channels-redis                     
+channels-redis
+django-websocket-notifications
+django-jazzmin
+django-debug-toolbar
